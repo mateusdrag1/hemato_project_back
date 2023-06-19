@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Patients {
+  id        Int      @id @default(autoincrement())
+  blade     String
+  age       Int
+  genre     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  erythrocyte Erythrocyte[]
+  leukocyte Leukocyte[]
+  platelets Platelets[]
+}
+
+model Erythrocyte {
+  id        Int      @id @default(autoincrement())
+  erythrocyte Float?
+  hemoglobin  Float?
+  hematocrit  Float?
+  RDW         Float?
+  patientId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  patient   Patients  @relation(fields: [patientId], references: [id])
+}
+
+model Leukocyte {
+  id        Int      @id @default(autoincrement())
+  leukocyte Float?
+  neutrophils  Float?
+  bandNeutrophils Float?
+  lymphocytes  Float?
+  monocytes    Float?
+  eosinophils  Float?
+  basophils    Float? 
+  patientId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  patient   Patients  @relation(fields: [patientId], references: [id])
+}
+
+model Platelets {
+  id        Int      @id @default(autoincrement())
+  platelets Float?
+  patientId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  patient   Patients  @relation(fields: [patientId], references: [id])
+}
