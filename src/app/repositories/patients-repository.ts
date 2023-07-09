@@ -4,6 +4,7 @@ export interface PatientsRepository {
   all: () => Promise<Patients[]>;
   create: (data: Prisma.PatientsCreateInput) => Promise<Patients>;
   findById: (id: number) => Promise<Patients | null>;
+  findByBlade: (blade: string) => Promise<Patients | null>;
   update: (id: number, data: Prisma.PatientsUpdateInput) => Promise<Patients | null>;
   delete: (id: number) => Promise<Patients | null>;
 

@@ -1,17 +1,17 @@
 {
-	"compilerOptions": {
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"module": "commonjs",
-		"outDir": "dist",
-		"rootDir": "src",
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": true,
-		"target": "es2020",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["src/*"]
-		}
-	}
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2020",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
 }

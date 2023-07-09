@@ -103,4 +103,14 @@ export class PrismaPatientsRepository implements PatientsRepository {
 
     return patient;
   }
+
+  async findByBlade(blade: string) {
+    const patient = await prisma.patients.findFirst({
+      where: {
+        blade,
+      },
+    });
+
+    return patient;
+  }
 }

@@ -1,0 +1,44 @@
+import { type PatientsRepository } from '../repositories/patients-repository';
+import { PatientAlreadyExistsError } from './errors/patient-already-exists.error';
+
+interface CreatePatientUseCaseRequest {
+  blade: string;
+  age: number;
+  genre: string;
+}
+
+interface CreatePatientUseCaseResponse {
+  id: number;
+  blade: string;
+  age: number;
+  genre: string;
+}
+
+export class CreatePatientUseCase {
+  constructor(private readonly patientsRepository: PatientsRepository) {}
+
+  async execute({
+    blade,
+    age,
+    genre,
+  }: CreatePatientUseCaseRequest): Promise<CreatePatientUseCaseResponse> {
+    const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const bladeId = blade.toString().padStart(4, '0');
+
+    const bladeFormatted = `${dateNow}${bladeId}`;
+
+    const hasPatientWithBlade = await this.patientsRepository.findByBlade(bladeFormatted);
+
+    if (hasPatientWithBlade) {
+      throw new PatientAlreadyExistsError();
+    }
+
+    const patient = await this.patientsRepository.create({
+      blade: bladeFormatted,
+      age,
+      genre,
+    });
+
+    return patient;
+  }
+}

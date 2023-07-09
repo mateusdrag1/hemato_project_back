@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("users")
 }
@@ -26,8 +26,8 @@ model Patients {
   blade       String
   age         Int
   genre       String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
   erythrocyte Erythrocyte[]
   leukocyte   Leukocyte[]
   platelets   Platelets[]
@@ -42,8 +42,8 @@ model Erythrocyte {
   hematocrit  Float?
   RDW         Float?
   patientId   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   patient     Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   @@map("erythrocytes")
@@ -59,20 +59,20 @@ model Leukocyte {
   eosinophils     Float?
   basophils       Float?
   patientId       Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
   patient         Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   @@map("leukocytes")
 }
 
 model Platelets {
-  id        Int      @id @default(autoincrement())
-  platelets Float?
-  patientId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  patient   Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  platelets  Float?
+  patientId  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  patient    Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   @@map("platelets")
 }
