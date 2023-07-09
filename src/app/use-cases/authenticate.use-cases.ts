@@ -33,10 +33,15 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError();
     }
 
-    const token = sign({}, env.JWT_SECRET, {
-      subject: user.id.toString(),
-      expiresIn: '1d',
-    });
+    const token = sign(
+      {
+        id: user.id,
+      },
+      env.JWT_SECRET,
+      {
+        expiresIn: '1d',
+      },
+    );
 
     return {
       name: user.name,

@@ -6,6 +6,8 @@ import { type FastifyInstance } from 'fastify';
 import { register } from '../controllers/register.controller';
 import { authenticate } from '../controllers/authenticate.controller';
 import { createPatient } from '../controllers/create-patient.controller';
+import { getPatients } from '../controllers/get-patients.controller';
+import { removePatient } from '../controllers/remove-patient.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -13,21 +15,14 @@ export async function appRoutes(app: FastifyInstance) {
   app.post('/register', register);
   app.post('/login', authenticate);
 
-  // // Pacient app
-  // app.get(
-  //   '/pacients',
-  //   {
-  //     preHandler: AuthMiddleware,
-  //   },
-  //   patientsController.index,
-  // );
-  // app.get(
-  //   '/pacients/:id',
-  //   {
-  //     preHandler: AuthMiddleware,
-  //   },
-  //   patientsController.show,
-  // );
+  app.get(
+    '/pacients',
+    {
+      preHandler: AuthMiddleware,
+    },
+    getPatients,
+  );
+
   app.post(
     '/pacients',
     {
@@ -35,20 +30,14 @@ export async function appRoutes(app: FastifyInstance) {
     },
     createPatient,
   );
-  // app.put(
-  //   '/pacients/:id',
-  //   {
-  //     preHandler: AuthMiddleware,
-  //   },
-  //   patientsController.update,
-  // );
-  // app.delete(
-  //   '/pacients/:id',
-  //   {
-  //     preHandler: AuthMiddleware,
-  //   },
-  //   patientsController.delete,
-  // );
+
+  app.delete(
+    '/pacients/:id',
+    {
+      preHandler: AuthMiddleware,
+    },
+    removePatient,
+  );
 
   // // Save Series from Pacient
   // app.post(

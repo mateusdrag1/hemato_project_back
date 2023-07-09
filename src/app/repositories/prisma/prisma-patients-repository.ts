@@ -50,13 +50,13 @@ export class PrismaPatientsRepository implements PatientsRepository {
   }
 
   async delete(id: number) {
-    const patient = await prisma.patients.delete({
+    await prisma.patients.delete({
       where: {
         id,
       },
     });
 
-    return patient;
+    return null;
   }
 
   async addErythrocyte(id: number, data: Prisma.ErythrocyteCreateInput) {

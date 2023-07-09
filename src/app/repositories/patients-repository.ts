@@ -6,7 +6,7 @@ export interface PatientsRepository {
   findById: (id: number) => Promise<Patients | null>;
   findByBlade: (blade: string) => Promise<Patients | null>;
   update: (id: number, data: Prisma.PatientsUpdateInput) => Promise<Patients | null>;
-  delete: (id: number) => Promise<Patients | null>;
+  delete: (id: number) => Promise<null>;
 
   addErythrocyte: (id: number, data: Prisma.ErythrocyteCreateInput) => Promise<Patients | null>;
   addLeukocyte: (id: number, data: Prisma.LeukocyteCreateInput) => Promise<Patients | null>;
