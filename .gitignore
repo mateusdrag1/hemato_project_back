@@ -136,4 +136,7 @@ dist
 # prisma
 .prismarc
 .prisma/client
-prisma/dev.db
+prisma/*.db
+
+# dist
+build

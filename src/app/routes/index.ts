@@ -2,10 +2,13 @@ import { Router } from 'express';
 import { AuthMiddleware } from '../middlewares/Auth';
 import { UserController } from '../controllers/user.controller';
 import { PatientController } from '../controllers/patient.controller';
+import HealthCheck from '../helpers/HealthCheck';
 
 const userController = new UserController();
 const patientsController = new PatientController();
 const routes = Router();
+
+routes.get('/', HealthCheck);
 
 // User routes
 routes.get('/users', AuthMiddleware, userController.index);
@@ -21,20 +24,8 @@ routes.put('/pacients/:id', AuthMiddleware, patientsController.update);
 routes.delete('/pacients/:id', AuthMiddleware, patientsController.delete);
 
 // Save Series from Pacient
-routes.post(
-	'/pacients/:id/erythrocytes',
-	AuthMiddleware,
-	patientsController.saveErythrocyte
-);
-routes.post(
-	'/pacients/:id/leukocytes',
-	AuthMiddleware,
-	patientsController.saveLeukocyte
-);
-routes.post(
-	'/pacients/:id/platelets',
-	AuthMiddleware,
-	patientsController.savePlatelet
-);
+routes.post('/pacients/:id/erythrocytes', AuthMiddleware, patientsController.saveErythrocyte);
+routes.post('/pacients/:id/leukocytes', AuthMiddleware, patientsController.saveLeukocyte);
+routes.post('/pacients/:id/platelets', AuthMiddleware, patientsController.savePlatelet);
 
 export default routes;

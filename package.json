@@ -1,32 +1,52 @@
 {
-	"name": "backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"start": "ts-node src/index.ts",
-		"build": "tsc",
-		"prisma": "prisma generate"
-	},
-	"keywords": [],
-	"author": "Matthieu Christian <matthieuceo@gmail.com>",
-	"license": "ISC",
-	"dependencies": {
-		"@prisma/client": "^4.14.1",
-		"bcrypt": "^5.1.0",
-		"cors": "^2.8.5",
-		"dotenv": "^16.3.1",
-		"express": "^4.18.2",
-		"jsonwebtoken": "^9.0.0"
-	},
-	"devDependencies": {
-		"@types/bcrypt": "^5.0.0",
-		"@types/cors": "^2.8.13",
-		"@types/express": "^4.17.17",
-		"@types/jsonwebtoken": "^9.0.2",
-		"@types/node": "^20.2.3",
-		"prisma": "^4.14.1",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.0.4"
-	}
+  "name": "hematopedia-api",
+  "version": "1.0.0",
+  "description": "Esse projeto é uma API para o hematopedia, um projeto de código aberto para ajudar a comunidade médica a ter acesso a informações sobre hematologia e hemoterapia.",
+  "license": "ISC",
+  "author": "Matthieu Christian <matthieuceo@gmail.com>",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src --out-dir build",
+    "format": "prettier --write src/**/*.ts",
+    "lint": "eslint src --ext .ts",
+    "start": "node dist",
+    "start:dev": "tsx watch src",
+    "test": "vitest run",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.2.3",
+    "@typescript-eslint/eslint-plugin": "5.60.1",
+    "@vitest/coverage-v8": "0.32.4",
+    "eslint": "8.44.0",
+    "eslint-config-standard-with-typescript": "36.0.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.7.0",
+    "eslint-plugin-promise": "6.1.1",
+    "prettier": "2.8.8",
+    "prisma": "^4.14.1",
+    "ts-node": "^10.9.1",
+    "tsup": "^7.1.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4",
+    "vite-tsconfig-paths": "4.2.0",
+    "vitest": "0.32.4"
+  }
 }

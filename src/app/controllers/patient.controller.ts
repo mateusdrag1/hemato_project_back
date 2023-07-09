@@ -1,223 +1,226 @@
-import { Request, Response } from 'express';
-import { BaseController } from './controller';
+import { type Request, type Response } from 'express';
+import { type BaseController } from './controller';
 import prisma from '../../database/PrismaClient';
 
 export class PatientController implements BaseController {
-	async index(req: Request, res: Response) {
-		try {
-			const patients = await prisma.patients.findMany({
-				include: {
-					erythrocyte: true,
-					leukocyte: true,
-					platelets: true,
-				},
-			});
+  async index(req: Request, res: Response) {
+    try {
+      const patients = await prisma.patients.findMany({
+        include: {
+          erythrocyte: true,
+          leukocyte: true,
+          platelets: true,
+        },
+      });
 
-			const formattedPatients = patients.map((patient) => {
-				return {
-					...patient,
-					created_at: patient.createdAt,
-					updated_at: patient.updatedAt,
-				};
-			});
+      const formattedPatients = patients.map((patient) => {
+        return {
+          ...patient,
+          created_at: patient.createdAt,
+          updated_at: patient.updatedAt,
+        };
+      });
 
-			res.json({
-				patients: formattedPatients,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
+      res.json({
+        patients: formattedPatients,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-	async show(req: Request, res: Response) {
-		const { id } = req.params;
-		try {
-			const patient = await prisma.patients.findUnique({
-				where: {
-					id: parseInt(id),
-				},
-			});
-			res.json({
-				patient,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
-	async store(req: Request, res: Response) {
-		const { blade, age, genre } = req.body;
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const patient = await prisma.patients.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+      res.json({
+        patient,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-		const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-		const bladeId = blade.toString().padStart(4, '0');
+  async store(req: Request, res: Response) {
+    const { blade, age, genre } = req.body;
 
-		const bladeFormatted = `${dateNow}${bladeId}`;
+    const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const bladeId = blade.toString().padStart(4, '0');
 
-		if (!blade || !age || !genre) {
-			return res.status(400).json({ error: 'Missing fields' });
-		}
+    const bladeFormatted = `${dateNow}${bladeId}`;
 
-		try {
-			const patientExists = await prisma.patients.findFirst({
-				where: {
-					blade: bladeFormatted,
-				},
-			});
+    if (!blade || !age || !genre) {
+      return res.status(400).json({ error: 'Missing fields' });
+    }
 
-			if (patientExists) {
-				return res.status(400).json({ error: 'Patient already exists' });
-			}
+    try {
+      const patientExists = await prisma.patients.findFirst({
+        where: {
+          blade: bladeFormatted,
+        },
+      });
 
-			const patient = await prisma.patients.create({
-				data: {
-					blade: bladeFormatted,
-					age: parseInt(age),
-					genre,
-				},
-			});
-			res.json({
-				patient: {
-					id: patient.id,
-					blade: patient.blade,
-					age: patient.age,
-					genre: patient.genre,
-					created_at: patient.createdAt,
-					updated_at: patient.updatedAt,
-				},
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
-	async update(req: Request, res: Response) {
-		const { id } = req.params;
-		const { blade, age, genre } = req.body;
+      if (patientExists) {
+        return res.status(400).json({ error: 'Patient already exists' });
+      }
 
-		const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-		const bladeId = blade.toString().padStart(4, '0');
+      const patient = await prisma.patients.create({
+        data: {
+          blade: bladeFormatted,
+          age: parseInt(age),
+          genre,
+        },
+      });
+      res.json({
+        patient: {
+          id: patient.id,
+          blade: patient.blade,
+          age: patient.age,
+          genre: patient.genre,
+          created_at: patient.createdAt,
+          updated_at: patient.updatedAt,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-		const bladeFormatted = `${dateNow}${bladeId}`;
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const { blade, age, genre } = req.body;
 
-		if (!blade || !age || !genre) {
-			return res.status(400).json({ error: 'Missing fields' });
-		}
+    const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const bladeId = blade.toString().padStart(4, '0');
 
-		try {
-			const patient = await prisma.patients.update({
-				where: {
-					id: parseInt(id),
-				},
-				data: {
-					blade: bladeFormatted,
-					age: parseInt(age),
-					genre,
-				},
-			});
-			res.json({
-				patient,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
-	async delete(req: Request, res: Response) {
-		const { id } = req.params;
+    const bladeFormatted = `${dateNow}${bladeId}`;
 
-		try {
-			const patient = await prisma.patients.delete({
-				where: {
-					id: parseInt(id),
-				},
-			});
-			res.json({
-				patient,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
+    if (!blade || !age || !genre) {
+      return res.status(400).json({ error: 'Missing fields' });
+    }
 
-	async saveErythrocyte(req: Request, res: Response) {
-		const { id } = req.params;
-		const { erythrocyte, hemoglobin, hematocrit, rdw } = req.body;
+    try {
+      const patient = await prisma.patients.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          blade: bladeFormatted,
+          age: parseInt(age),
+          genre,
+        },
+      });
+      res.json({
+        patient,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-		try {
-			const erythrocyteDB = await prisma.erythrocyte.create({
-				data: {
-					erythrocyte,
-					hemoglobin,
-					hematocrit,
-					RDW: rdw,
-					patientId: parseInt(id),
-				},
-			});
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
 
-			res.json({
-				erythrocyteDB,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
+    try {
+      const patient = await prisma.patients.delete({
+        where: {
+          id: parseInt(id),
+        },
+      });
+      res.json({
+        patient,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-	async saveLeukocyte(req: Request, res: Response) {
-		const { id } = req.params;
-		const {
-			leukocyte,
-			neutrophil,
-			bandNeutrophils,
-			lymphocyte,
-			monocyte,
-			eosinophil,
-			basophil,
-		} = req.body;
+  async saveErythrocyte(req: Request, res: Response) {
+    const { id } = req.params;
+    const { erythrocyte, hemoglobin, hematocrit, rdw } = req.body;
 
-		try {
-			const leukocyteDB = await prisma.leukocyte.create({
-				data: {
-					leukocyte,
-					neutrophils: neutrophil,
-					bandNeutrophils,
-					lymphocytes: lymphocyte,
-					monocytes: monocyte,
-					eosinophils: eosinophil,
-					basophils: basophil,
-					patientId: parseInt(id),
-				},
-			});
+    try {
+      const erythrocyteDB = await prisma.erythrocyte.create({
+        data: {
+          erythrocyte,
+          hemoglobin,
+          hematocrit,
+          RDW: rdw,
+          patientId: parseInt(id),
+        },
+      });
 
-			res.json({
-				leukocyteDB,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
+      res.json({
+        erythrocyteDB,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-	async savePlatelet(req: Request, res: Response) {
-		const { id } = req.params;
-		const { platelets } = req.body;
+  async saveLeukocyte(req: Request, res: Response) {
+    const { id } = req.params;
+    const {
+      leukocyte,
+      neutrophil,
+      bandNeutrophils,
+      lymphocyte,
+      monocyte,
+      eosinophil,
+      basophil,
+    } = req.body;
 
-		try {
-			const plateletDB = await prisma.platelets.create({
-				data: {
-					platelets,
-					patientId: parseInt(id),
-				},
-			});
+    try {
+      const leukocyteDB = await prisma.leukocyte.create({
+        data: {
+          leukocyte,
+          neutrophils: neutrophil,
+          bandNeutrophils,
+          lymphocytes: lymphocyte,
+          monocytes: monocyte,
+          eosinophils: eosinophil,
+          basophils: basophil,
+          patientId: parseInt(id),
+        },
+      });
 
-			res.json({
-				plateletDB,
-			});
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ error: 'Internal server error' });
-		}
-	}
+      res.json({
+        leukocyteDB,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  async savePlatelet(req: Request, res: Response) {
+    const { id } = req.params;
+    const { platelets } = req.body;
+
+    try {
+      const plateletDB = await prisma.platelets.create({
+        data: {
+          platelets,
+          patientId: parseInt(id),
+        },
+      });
+
+      res.json({
+        plateletDB,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 }
