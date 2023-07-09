@@ -14,48 +14,56 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
-  name      String?
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Patients {
-  id        Int      @id @default(autoincrement())
-  blade     String
-  age       Int
-  genre     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int           @id @default(autoincrement())
+  blade       String
+  age         Int
+  genre       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   erythrocyte Erythrocyte[]
-  leukocyte Leukocyte[]
-  platelets Platelets[]
+  leukocyte   Leukocyte[]
+  platelets   Platelets[]
+
+  @@map("patients")
 }
 
 model Erythrocyte {
-  id        Int      @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   erythrocyte Float?
   hemoglobin  Float?
   hematocrit  Float?
   RDW         Float?
-  patientId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  patient   Patients  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  patient     Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("erythrocytes")
 }
 
 model Leukocyte {
-  id        Int      @id @default(autoincrement())
-  leukocyte Float?
-  neutrophils  Float?
+  id              Int      @id @default(autoincrement())
+  leukocyte       Float?
+  neutrophils     Float?
   bandNeutrophils Float?
-  lymphocytes  Float?
-  monocytes    Float?
-  eosinophils  Float?
-  basophils    Float? 
-  patientId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  patient   Patients  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  lymphocytes     Float?
+  monocytes       Float?
+  eosinophils     Float?
+  basophils       Float?
+  patientId       Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  patient         Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("leukocytes")
 }
 
 model Platelets {
@@ -64,5 +72,7 @@ model Platelets {
   patientId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  patient   Patients  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patient   Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("platelets")
 }

@@ -1,31 +1,77 @@
-import { Router } from 'express';
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { AuthMiddleware } from '../middlewares/Auth';
-import { UserController } from '../controllers/user.controller';
+
 import { PatientController } from '../controllers/patient.controller';
 import HealthCheck from '../helpers/HealthCheck';
+import { type FastifyInstance } from 'fastify';
+import { register } from '../controllers/register.controller';
+import { authenticate } from '../controllers/authenticate.controller';
 
-const userController = new UserController();
 const patientsController = new PatientController();
-const routes = Router();
 
-routes.get('/', HealthCheck);
+export async function appRoutes(app: FastifyInstance) {
+  app.get('/', HealthCheck);
 
-// User routes
-routes.get('/users', AuthMiddleware, userController.index);
-routes.get('/users/:id', AuthMiddleware, userController.show);
-routes.post('/register', userController.store);
-routes.post('/login', userController.login);
+  app.post('/register', register);
+  app.post('/login', authenticate);
 
-// Pacient routes
-routes.get('/pacients', AuthMiddleware, patientsController.index);
-routes.get('/pacients/:id', AuthMiddleware, patientsController.show);
-routes.post('/pacients', AuthMiddleware, patientsController.store);
-routes.put('/pacients/:id', AuthMiddleware, patientsController.update);
-routes.delete('/pacients/:id', AuthMiddleware, patientsController.delete);
+  // Pacient app
+  app.get(
+    '/pacients',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.index,
+  );
+  app.get(
+    '/pacients/:id',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.show,
+  );
+  app.post(
+    '/pacients',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.store,
+  );
+  app.put(
+    '/pacients/:id',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.update,
+  );
+  app.delete(
+    '/pacients/:id',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.delete,
+  );
 
-// Save Series from Pacient
-routes.post('/pacients/:id/erythrocytes', AuthMiddleware, patientsController.saveErythrocyte);
-routes.post('/pacients/:id/leukocytes', AuthMiddleware, patientsController.saveLeukocyte);
-routes.post('/pacients/:id/platelets', AuthMiddleware, patientsController.savePlatelet);
-
-export default routes;
+  // Save Series from Pacient
+  app.post(
+    '/pacients/:id/erythrocytes',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.saveErythrocyte,
+  );
+  app.post(
+    '/pacients/:id/leukocytes',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.saveLeukocyte,
+  );
+  app.post(
+    '/pacients/:id/platelets',
+    {
+      preHandler: AuthMiddleware,
+    },
+    patientsController.savePlatelet,
+  );
+}

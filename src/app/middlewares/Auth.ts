@@ -1,28 +1,28 @@
-import { type NextFunction, type Request, type Response } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
-import { JWT_SECRET } from '../constants';
+import { type HookHandlerDoneFunction, type FastifyReply, type FastifyRequest } from 'fastify';
+import { env } from '@/env';
 
 export const AuthMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
+  req: FastifyRequest,
+  res: FastifyReply,
+  done: HookHandlerDoneFunction,
 ) => {
   const jwtAuthorization = req.headers.authorization;
 
   if (!jwtAuthorization) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).send({ error: 'Unauthorized' });
   }
 
   const [, token] = jwtAuthorization.split(' ');
 
   try {
-    const { id } = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const { id } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 
     req.body.userID = id;
 
-    next();
+    done();
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).send({ error: 'Unauthorized' });
   }
 };

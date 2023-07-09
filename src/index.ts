@@ -1,16 +1,62 @@
-import express from 'express';
-import cors from 'cors';
+import fastify, { type FastifyInstance } from 'fastify';
+import { env } from '@/env';
+import { error, log } from '@/utils/Logger';
+import { appRoutes } from '@/app/routes';
+import { ZodError } from 'zod';
 
-import routes from './app/routes';
+class App {
+  public app: FastifyInstance;
 
-const app = express();
+  constructor() {
+    this.app = fastify();
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    this.routesConfig();
 
-app.use(routes);
+    this.start();
+  }
 
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
-});
+  private async routesConfig() {
+    this.app.register(appRoutes);
+
+    this.app.setErrorHandler((err, _request, response) => {
+      error(err.message);
+
+      if (err instanceof ZodError) {
+        return response.status(400).send({
+          statusCode: 400,
+          error: 'Validation Error',
+          message: err.format(),
+        });
+      }
+
+      if (env.NODE_ENV !== 'production') {
+        error(err.message);
+      } else {
+        // TODO: add error reporting service
+      }
+
+      response.status(500).send({
+        error: 'Internal Server Error',
+        message: 'Something went wrong',
+      });
+    });
+  }
+
+  private async start() {
+    await this.app
+      .listen({
+        host: '0.0.0.0',
+        port: env.PORT,
+      })
+      .then((address) => {
+        log(`HTTP server started on ${address}`);
+      })
+      .catch((err) => {
+        error(`Server failed to start on port ${env.PORT}`);
+        console.error(err);
+        process.exit(1);
+      });
+  }
+}
+
+export default new App().app;

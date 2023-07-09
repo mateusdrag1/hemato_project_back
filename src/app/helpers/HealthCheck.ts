@@ -1,10 +1,6 @@
-import { type NextFunction, type Request, type Response } from 'express';
+import { type FastifyReply, type FastifyRequest } from 'fastify';
 
-const HealthCheck = async (
-  _req: Request,
-  _res: Response,
-  _next: NextFunction,
-) => {
+const HealthCheck = async (_req: FastifyRequest, _res: FastifyReply) => {
   const healthCheck = {
     uptime: process.uptime(),
     responseTime: process.hrtime(),
@@ -13,10 +9,9 @@ const HealthCheck = async (
   };
 
   try {
-    return _res.status(200).json(healthCheck);
+    return _res.status(200).send(healthCheck);
   } catch (e) {
-    healthCheck.message = e;
-    return _res.status(503).json(healthCheck);
+    return _res.status(503).send(healthCheck);
   }
 };
 
