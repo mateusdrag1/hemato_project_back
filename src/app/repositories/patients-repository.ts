@@ -8,7 +8,16 @@ export interface PatientsRepository {
   update: (id: number, data: Prisma.PatientsUpdateInput) => Promise<Patients | null>;
   delete: (id: number) => Promise<null>;
 
-  addErythrocyte: (id: number, data: Prisma.ErythrocyteCreateInput) => Promise<Patients | null>;
-  addLeukocyte: (id: number, data: Prisma.LeukocyteCreateInput) => Promise<Patients | null>;
-  addPlatelets: (id: number, data: Prisma.PlateletsCreateInput) => Promise<Patients | null>;
+  addErythrocyte: (
+    id: number,
+    data: Omit<Prisma.ErythrocyteCreateInput, 'patient'>,
+  ) => Promise<Patients | null>;
+  addLeukocyte: (
+    id: number,
+    data: Omit<Prisma.LeukocyteCreateInput, 'patient'>,
+  ) => Promise<Patients | null>;
+  addPlatelets: (
+    id: number,
+    data: Omit<Prisma.PlateletsCreateInput, 'patient'>,
+  ) => Promise<Patients | null>;
 }

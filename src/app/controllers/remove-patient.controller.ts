@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
 
 export async function removePatient(req: FastifyRequest, res: FastifyReply) {
-  const removePatientParamsParser = z.object({
+  const removePatientParamsSchema = z.object({
     id: z.coerce.number(),
   });
 
-  const { id } = removePatientParamsParser.parse(req.params);
+  const { id } = removePatientParamsSchema.parse(req.params);
 
   const removePatientUseCase = makeRemovePatientUseCase();
 

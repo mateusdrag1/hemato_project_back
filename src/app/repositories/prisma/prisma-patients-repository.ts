@@ -59,7 +59,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return null;
   }
 
-  async addErythrocyte(id: number, data: Prisma.ErythrocyteCreateInput) {
+  async addErythrocyte(id: number, data: Omit<Prisma.ErythrocyteCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -74,7 +74,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async addLeukocyte(id: number, data: Prisma.LeukocyteCreateInput) {
+  async addLeukocyte(id: number, data: Omit<Prisma.LeukocyteCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -89,7 +89,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async addPlatelets(id: number, data: Prisma.PlateletsCreateInput) {
+  async addPlatelets(id: number, data: Omit<Prisma.PlateletsCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,

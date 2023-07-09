@@ -8,6 +8,7 @@ import { authenticate } from '../controllers/authenticate.controller';
 import { createPatient } from '../controllers/create-patient.controller';
 import { getPatients } from '../controllers/get-patients.controller';
 import { removePatient } from '../controllers/remove-patient.controller';
+import { saveErythrocyte } from '../controllers/save-erythrocyte.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -16,7 +17,7 @@ export async function appRoutes(app: FastifyInstance) {
   app.post('/login', authenticate);
 
   app.get(
-    '/pacients',
+    '/patients',
     {
       preHandler: AuthMiddleware,
     },
@@ -24,7 +25,7 @@ export async function appRoutes(app: FastifyInstance) {
   );
 
   app.post(
-    '/pacients',
+    '/patients',
     {
       preHandler: AuthMiddleware,
     },
@@ -32,30 +33,30 @@ export async function appRoutes(app: FastifyInstance) {
   );
 
   app.delete(
-    '/pacients/:id',
+    '/patients/:id',
     {
       preHandler: AuthMiddleware,
     },
     removePatient,
   );
 
-  // // Save Series from Pacient
+  app.post(
+    '/patients/:id/erythrocytes',
+    {
+      preHandler: AuthMiddleware,
+    },
+    saveErythrocyte,
+  );
+
   // app.post(
-  //   '/pacients/:id/erythrocytes',
-  //   {
-  //     preHandler: AuthMiddleware,
-  //   },
-  //   patientsController.saveErythrocyte,
-  // );
-  // app.post(
-  //   '/pacients/:id/leukocytes',
+  //   '/patients/:id/leukocytes',
   //   {
   //     preHandler: AuthMiddleware,
   //   },
   //   patientsController.saveLeukocyte,
   // );
   // app.post(
-  //   '/pacients/:id/platelets',
+  //   '/patients/:id/platelets',
   //   {
   //     preHandler: AuthMiddleware,
   //   },
