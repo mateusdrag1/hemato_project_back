@@ -10,7 +10,7 @@ export const AuthMiddleware = (
   const jwtAuthorization = req.headers.authorization;
 
   if (!jwtAuthorization) {
-    res.status(401).send({ error: 'Unauthorized' });
+    return res.status(401).send({ error: 'Unauthorized' });
   }
 
   const [, token] = jwtAuthorization.split(' ');
@@ -23,6 +23,6 @@ export const AuthMiddleware = (
     done();
   } catch (err) {
     console.error(err);
-    res.status(401).send({ error: 'Unauthorized' });
+    return res.status(401).send({ error: 'Unauthorized' });
   }
 };
