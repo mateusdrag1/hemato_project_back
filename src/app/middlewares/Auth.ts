@@ -2,7 +2,7 @@ import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { type HookHandlerDoneFunction, type FastifyReply, type FastifyRequest } from 'fastify';
 import { env } from '@/env';
 
-export const AuthMiddleware = async (
+export const AuthMiddleware = (
   req: FastifyRequest,
   res: FastifyReply,
   done: HookHandlerDoneFunction,

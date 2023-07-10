@@ -3,6 +3,7 @@ import { env } from '@/env';
 import { error, log } from '@/utils/Logger';
 import { appRoutes } from '@/app/routes';
 import { ZodError } from 'zod';
+import cors from '@fastify/cors';
 
 class App {
   public app: FastifyInstance;
@@ -16,6 +17,8 @@ class App {
   }
 
   private async routesConfig() {
+    this.app.register(cors);
+
     this.app.register(appRoutes);
 
     this.app.setErrorHandler((err, _request, response) => {
