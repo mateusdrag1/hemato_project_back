@@ -13,6 +13,7 @@ import { savePlatelets } from '../controllers/save-platelets.controller';
 import { saveLeukocyte } from '../controllers/save-leukocyte.controller';
 import { saveUrineTest } from '../controllers/save-urine-test.controller';
 import { createCategory } from '../controllers/create-category.controller';
+import { createMention } from '../controllers/create-mention.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -82,5 +83,13 @@ export async function appRoutes(app: FastifyInstance) {
       preHandler: AuthMiddleware,
     },
     createCategory,
+  );
+
+  app.post(
+    '/mentions',
+    {
+      preHandler: AuthMiddleware,
+    },
+    createMention,
   );
 }

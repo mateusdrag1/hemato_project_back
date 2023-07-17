@@ -26,4 +26,14 @@ export class PrismaMentionsRepository implements MentionsRepository {
 
     return mentions;
   }
+
+  async findByName(name: string) {
+    const mention = await prisma.mention.findFirst({
+      where: {
+        name,
+      },
+    });
+
+    return mention;
+  }
 }
