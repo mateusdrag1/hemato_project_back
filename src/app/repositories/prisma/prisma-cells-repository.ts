@@ -30,4 +30,25 @@ export class PrismaCellRepository implements CellRepository {
 
     return cell;
   }
+
+  async findAll() {
+    const cells = await prisma.cell.findMany({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        clinical_relevance: true,
+        morphology: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    return cells;
+  }
 }

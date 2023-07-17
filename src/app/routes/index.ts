@@ -17,6 +17,7 @@ import { createMention } from '../controllers/create-mention.controller';
 import { getCategories } from '../controllers/get-categories.controller';
 import { getMentions } from '../controllers/get-mentions.controller';
 import { createCell } from '../controllers/create-cell.controller';
+import { getCells } from '../controllers/get-cells.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -118,5 +119,13 @@ export async function appRoutes(app: FastifyInstance) {
       preHandler: AuthMiddleware,
     },
     createCell,
+  );
+
+  app.get(
+    '/cells',
+    {
+      preHandler: AuthMiddleware,
+    },
+    getCells,
   );
 }
