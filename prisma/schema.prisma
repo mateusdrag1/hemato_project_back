@@ -31,6 +31,7 @@ model Patients {
   erythrocyte Erythrocyte[]
   leukocyte   Leukocyte[]
   platelets   Platelets[]
+  Urine       Urine[]
 
   @@map("patients")
 }
@@ -75,4 +76,33 @@ model Platelets {
   patient    Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   @@map("platelets")
+}
+
+model Urine {
+  id               Int      @id @default(autoincrement())
+  volume           Float?
+  color            String?
+  ph               Float?
+  density          Float?
+  protein          String?
+  glucose          String?
+  ketones          String?
+  nitrites         Boolean?
+  hemoglobin       String?
+  urobilinogen     String?
+  sed_leukocytes   String?
+  sed_erythrocytes String?
+  sed_epithelial   String?
+  sed_mucus        String?
+  sed_cylinders    String?
+  sed_crystals     String?
+  sed_bacteria     String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  patientId Int
+
+  patient Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("urine_tests")
 }

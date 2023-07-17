@@ -1,0 +1,25 @@
+-- CreateTable
+CREATE TABLE "urine_tests" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "volume" REAL,
+    "color" TEXT,
+    "ph" REAL,
+    "density" REAL,
+    "protein" TEXT,
+    "glucose" TEXT,
+    "ketones" TEXT,
+    "nitrites" BOOLEAN,
+    "hemoglobin" TEXT,
+    "urobilinogen" TEXT,
+    "sed_leukocytes" TEXT,
+    "sed_erythrocytes" TEXT,
+    "sed_epithelial" TEXT,
+    "sed_mucus" TEXT,
+    "sed_cylinders" TEXT,
+    "sed_crystals" TEXT,
+    "sed_bacteria" TEXT,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL,
+    "patientId" INTEGER NOT NULL,
+    CONSTRAINT "urine_tests_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "patients" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);

@@ -11,6 +11,7 @@ import { removePatient } from '../controllers/remove-patient.controller';
 import { saveErythrocyte } from '../controllers/save-erythrocyte.controller';
 import { savePlatelets } from '../controllers/save-platelets.controller';
 import { saveLeukocyte } from '../controllers/save-leukocyte.controller';
+import { saveUrineTest } from '../controllers/save-urine-test.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -64,5 +65,13 @@ export async function appRoutes(app: FastifyInstance) {
       preHandler: AuthMiddleware,
     },
     savePlatelets,
+  );
+
+  app.post(
+    '/patients/:id/urine',
+    {
+      preHandler: AuthMiddleware,
+    },
+    saveUrineTest,
   );
 }

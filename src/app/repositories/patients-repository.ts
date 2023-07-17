@@ -20,4 +20,8 @@ export interface PatientsRepository {
     id: number,
     data: Omit<Prisma.PlateletsCreateInput, 'patient'>,
   ) => Promise<Patients | null>;
+  addUrineTest: (
+    id: number,
+    data: Omit<Prisma.UrineCreateInput, 'patient'>,
+  ) => Promise<Patients | null>;
 }

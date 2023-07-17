@@ -104,6 +104,21 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
+  async addUrineTest(id: number, data: Omit<Prisma.UrineCreateInput, 'patient'>) {
+    const patient = await prisma.patients.update({
+      where: {
+        id,
+      },
+      data: {
+        Urine: {
+          create: data,
+        },
+      },
+    });
+
+    return patient;
+  }
+
   async findByBlade(blade: string) {
     const patient = await prisma.patients.findFirst({
       where: {
