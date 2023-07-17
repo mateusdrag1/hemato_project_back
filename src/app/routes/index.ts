@@ -14,6 +14,7 @@ import { saveLeukocyte } from '../controllers/save-leukocyte.controller';
 import { saveUrineTest } from '../controllers/save-urine-test.controller';
 import { createCategory } from '../controllers/create-category.controller';
 import { createMention } from '../controllers/create-mention.controller';
+import { getCategories } from '../controllers/get-categories.controller';
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/', HealthCheck);
@@ -91,5 +92,13 @@ export async function appRoutes(app: FastifyInstance) {
       preHandler: AuthMiddleware,
     },
     createMention,
+  );
+
+  app.get(
+    '/categories',
+    {
+      preHandler: AuthMiddleware,
+    },
+    getCategories,
   );
 }
