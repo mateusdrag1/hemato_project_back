@@ -1,8 +1,8 @@
 import prisma from '@/database/PrismaClient';
 import { type Prisma } from '@prisma/client';
-import { type CellsRepository } from '../cells-repository';
+import { type CellRepository } from '../cell-repository';
 
-export class PrismaCellsRepository implements CellsRepository {
+export class PrismaCellRepository implements CellRepository {
   async create(data: Prisma.CellCreateInput) {
     const cell = await prisma.cell.create({
       data,
@@ -15,6 +15,16 @@ export class PrismaCellsRepository implements CellsRepository {
     const cell = await prisma.cell.findUnique({
       where: {
         id,
+      },
+    });
+
+    return cell;
+  }
+
+  async findByName(name: string) {
+    const cell = await prisma.cell.findFirst({
+      where: {
+        name,
       },
     });
 
