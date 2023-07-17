@@ -106,3 +106,57 @@ model Urine {
 
   @@map("urine_tests")
 }
+
+model Cell {
+  id                 Int    @id @default(autoincrement())
+  name               String
+  morphology         String
+  clinical_relevance String
+  image              String
+
+  category_id Int
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  CellMention CellMention[]
+
+  @@map("cells")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Cell       Cell[]
+
+  @@map("categories")
+}
+
+model Mention {
+  id   Int     @id @default(autoincrement())
+  name String
+  url  String?
+
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  CellMention CellMention[]
+
+  @@map("mentions")
+}
+
+model CellMention {
+  id        Int @id @default(autoincrement())
+  cell_id   Int
+  mentionId Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  cell    Cell    @relation(fields: [cell_id], references: [id], onDelete: Cascade)
+  mention Mention @relation(fields: [mentionId], references: [id], onDelete: Cascade)
+
+  @@map("cell_mentions")
+}
