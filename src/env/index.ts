@@ -8,6 +8,9 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(8080),
   HOST: z.string().default('0.0.0.0'),
   JWT_SECRET: z.string().default('secret'),
+  CLOUD_NAME: z.string(),
+  CLOUD_API_KEY: z.string(),
+  CLOUD_API_SECRET: z.string(),
 });
 
 const envParsed = envSchema.safeParse(process.env);

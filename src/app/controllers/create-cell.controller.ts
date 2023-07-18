@@ -3,19 +3,28 @@ import { z } from 'zod';
 import { makeCreateCellUseCase } from '../use-cases/factories/make-create-cell.use-case';
 import { ResourceAlreadyExistsError } from '../use-cases/errors/resource-already-exists.error';
 import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
+import { makeUploadUseCase } from '../use-cases/factories/make-upload.use-cases';
 
 export async function createCell(req: FastifyRequest, res: FastifyReply) {
   const createCellBodySchema = z.object({
     name: z.string().min(3).max(256),
     morphology: z.string().min(3).max(256),
     clinical_relevance: z.string().min(3).max(256),
-    image: z.string().min(3).max(256),
+    image: z.string(),
     category_id: z.coerce.number(),
   });
 
   const createCellBody = createCellBodySchema.parse(req.body);
 
   try {
+    const uploadUseCase = makeUploadUseCase();
+
+    const data = await uploadUseCase.execute({
+      base64: createCellBody.image,
+    });
+
+    createCellBody.image = data.url;
+
     const createCellUseCase = makeCreateCellUseCase();
 
     const cell = await createCellUseCase.execute(createCellBody);
