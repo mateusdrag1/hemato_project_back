@@ -3,7 +3,7 @@ import { type PatientsRepository } from '../repositories/patients-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found.error';
 
 interface saveErythrocyteUseCaseRequest {
-  id: number;
+  id: string;
   erythrocyte: number;
   hemoglobin: number;
   hematocrit: number;

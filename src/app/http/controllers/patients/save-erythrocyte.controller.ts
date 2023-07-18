@@ -1,11 +1,11 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { makeSaveErythrocyteUseCase } from '../use-cases/factories/make-save-erythrocyte.use-case';
-import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
+import { makeSaveErythrocyteUseCase } from '@/app/use-cases/factories/make-save-erythrocyte.use-case';
+import { ResourceNotFoundError } from '@/app/use-cases/errors/resource-not-found.error';
 
 export async function saveErythrocyte(req: FastifyRequest, res: FastifyReply) {
   const saveErythrocyteParamsSchema = z.object({
-    id: z.coerce.number(),
+    id: z.string(),
   });
 
   const saveErythrocyteBodySchema = z.object({

@@ -3,7 +3,7 @@ import { type PatientsRepository } from '../repositories/patients-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found.error';
 
 interface saveUrineTestUseCaseRequest {
-  id: number;
+  id: string;
   volume: number;
   color: string;
   ph: number;

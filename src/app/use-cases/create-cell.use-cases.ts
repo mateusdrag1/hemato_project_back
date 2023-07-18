@@ -8,6 +8,7 @@ interface CreateCellUseCaseRequest {
   morphology: string;
   clinical_relevance: string;
   image: string;
+  created_by: string;
   category_id: number;
 }
 
@@ -49,6 +50,11 @@ export class CreateCellUseCase {
       category: {
         connect: {
           id: category?.id,
+        },
+      },
+      owner: {
+        connect: {
+          id: data.created_by,
         },
       },
     };

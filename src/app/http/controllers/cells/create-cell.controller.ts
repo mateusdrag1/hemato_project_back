@@ -1,9 +1,9 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { makeCreateCellUseCase } from '../use-cases/factories/make-create-cell.use-case';
-import { ResourceAlreadyExistsError } from '../use-cases/errors/resource-already-exists.error';
-import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
-import { makeUploadUseCase } from '../use-cases/factories/make-upload.use-cases';
+import { makeCreateCellUseCase } from '@/app/use-cases/factories/make-create-cell.use-case';
+import { ResourceAlreadyExistsError } from '@/app/use-cases/errors/resource-already-exists.error';
+import { ResourceNotFoundError } from '@/app/use-cases/errors/resource-not-found.error';
+import { makeUploadUseCase } from '@/app/use-cases/factories/make-upload.use-cases';
 
 export async function createCell(req: FastifyRequest, res: FastifyReply) {
   const createCellBodySchema = z.object({
@@ -27,7 +27,10 @@ export async function createCell(req: FastifyRequest, res: FastifyReply) {
 
     const createCellUseCase = makeCreateCellUseCase();
 
-    const cell = await createCellUseCase.execute(createCellBody);
+    const cell = await createCellUseCase.execute({
+      ...createCellBody,
+      created_by: req.user.sub,
+    });
 
     res.status(201).send({
       cell,

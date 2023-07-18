@@ -1,7 +1,7 @@
+import { PatientAlreadyExistsError } from '@/app/use-cases/errors/patient-already-exists.error';
+import { makeCreatePatientUseCase } from '@/app/use-cases/factories/make-create-patient.use-case';
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { makeCreatePatientUseCase } from '../use-cases/factories/make-create-patient.use-case';
-import { PatientAlreadyExistsError } from '../use-cases/errors/patient-already-exists.error';
 
 export async function createPatient(req: FastifyRequest, res: FastifyReply) {
   const createPatientBodySchema = z.object({
@@ -19,6 +19,7 @@ export async function createPatient(req: FastifyRequest, res: FastifyReply) {
       blade,
       age,
       genre,
+      ownerId: req.user.sub,
     });
 
     res.status(201).send({

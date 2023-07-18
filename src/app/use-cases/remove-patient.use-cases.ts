@@ -2,7 +2,7 @@ import { type PatientsRepository } from '../repositories/patients-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found.error';
 
 interface RemovePatientUseCaseRequest {
-  id: number;
+  id: string;
 }
 
 export class RemovePatientUseCase {

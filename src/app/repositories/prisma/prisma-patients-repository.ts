@@ -23,7 +23,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     const patient = await prisma.patients.findUnique({
       where: {
         id,
@@ -38,7 +38,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async update(id: number, data: Prisma.PatientsUpdateInput) {
+  async update(id: string, data: Prisma.PatientsUpdateInput) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -49,7 +49,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     await prisma.patients.delete({
       where: {
         id,
@@ -59,7 +59,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return null;
   }
 
-  async addErythrocyte(id: number, data: Omit<Prisma.ErythrocyteCreateInput, 'patient'>) {
+  async addErythrocyte(id: string, data: Omit<Prisma.ErythrocyteCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -74,7 +74,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async addLeukocyte(id: number, data: Omit<Prisma.LeukocyteCreateInput, 'patient'>) {
+  async addLeukocyte(id: string, data: Omit<Prisma.LeukocyteCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -89,7 +89,7 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async addPlatelets(id: number, data: Omit<Prisma.PlateletsCreateInput, 'patient'>) {
+  async addPlatelets(id: string, data: Omit<Prisma.PlateletsCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
@@ -104,13 +104,13 @@ export class PrismaPatientsRepository implements PatientsRepository {
     return patient;
   }
 
-  async addUrineTest(id: number, data: Omit<Prisma.UrineCreateInput, 'patient'>) {
+  async addUrineTest(id: string, data: Omit<Prisma.UrineCreateInput, 'patient'>) {
     const patient = await prisma.patients.update({
       where: {
         id,
       },
       data: {
-        Urine: {
+        urine: {
           create: data,
         },
       },

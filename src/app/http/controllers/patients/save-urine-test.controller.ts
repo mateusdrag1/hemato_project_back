@@ -1,11 +1,11 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { makeSaveUrineTestUseCase } from '../use-cases/factories/make-save-urine-test.use-case';
-import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
+import { makeSaveUrineTestUseCase } from '@/app/use-cases/factories/make-save-urine-test.use-case';
+import { ResourceNotFoundError } from '@/app/use-cases/errors/resource-not-found.error';
 
 export async function saveUrineTest(req: FastifyRequest, res: FastifyReply) {
   const saveUrineTestParamsSchema = z.object({
-    id: z.coerce.number(),
+    id: z.string(),
   });
 
   const saveUrineTestBodySchema = z.object({

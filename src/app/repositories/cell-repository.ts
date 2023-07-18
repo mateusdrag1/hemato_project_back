@@ -4,5 +4,5 @@ export interface CellRepository {
   create: (data: Prisma.CellCreateInput) => Promise<Cell>;
   findById: (id: number) => Promise<Cell | null>;
   findByName: (name: string) => Promise<Cell | null>;
-  findAll: () => Promise<Array<Omit<Cell, 'category_id'>>>;
+  findAll: () => Promise<Array<Omit<Cell, 'category_id' | 'created_by'>>>;
 }

@@ -1,5 +1,5 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
-import { makeGetMentionsUseCases } from '../use-cases/factories/make-get-mentions.use-case';
+import { makeGetMentionsUseCases } from '@/app/use-cases/factories/make-get-mentions.use-case';
 
 export async function getMentions(req: FastifyRequest, res: FastifyReply) {
   const createMentionsUseCase = makeGetMentionsUseCases();

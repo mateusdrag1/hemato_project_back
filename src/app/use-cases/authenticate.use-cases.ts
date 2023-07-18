@@ -1,8 +1,7 @@
 import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
 import { type UsersRepository } from '../repositories/users-repository';
-import { env } from '@/env';
 import { InvalidCredentialsError } from './errors/invalid-credentials.error';
+import { type User } from '@prisma/client';
 
 interface AuthenticateUseCaseRequest {
   email: string;
@@ -10,8 +9,7 @@ interface AuthenticateUseCaseRequest {
 }
 
 interface AuthenticateUseCaseResponse {
-  name: string;
-  token: string;
+  user: User;
 }
 
 export class AuthenticateUseCase {
@@ -33,19 +31,6 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError();
     }
 
-    const token = sign(
-      {
-        id: user.id,
-      },
-      env.JWT_SECRET,
-      {
-        expiresIn: '1d',
-      },
-    );
-
-    return {
-      name: user.name,
-      token,
-    };
+    return { user };
   }
 }

@@ -1,7 +1,7 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify';
-import { makeCreateCategoryUseCase } from '../use-cases/factories/make-create-category.use-case';
+import { makeCreateCategoryUseCase } from '@/app/use-cases/factories/make-create-category.use-case';
 import { z } from 'zod';
-import { ResourceAlreadyExistsError } from '../use-cases/errors/resource-already-exists.error';
+import { ResourceAlreadyExistsError } from '@/app/use-cases/errors/resource-already-exists.error';
 
 export async function createCategory(request: FastifyRequest, response: FastifyReply) {
   const createCategoryBodySchema = z.object({

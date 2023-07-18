@@ -1,5 +1,5 @@
+import { makeGetPatientsUseCase } from '@/app/use-cases/factories/make-get-patients.use-cases';
 import { type FastifyRequest, type FastifyReply } from 'fastify';
-import { makeGetPatientsUseCase } from '../use-cases/factories/make-get-patients.use-cases';
 
 export async function getPatients(req: FastifyRequest, res: FastifyReply) {
   const createPatientUseCase = makeGetPatientsUseCase();

@@ -1,11 +1,11 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify';
-import { makeRemovePatientUseCase } from '../use-cases/factories/make-remove-patient.use-cases';
+import { makeRemovePatientUseCase } from '@/app/use-cases/factories/make-remove-patient.use-cases';
 import { z } from 'zod';
-import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found.error';
+import { ResourceNotFoundError } from '@/app/use-cases/errors/resource-not-found.error';
 
 export async function removePatient(req: FastifyRequest, res: FastifyReply) {
   const removePatientParamsSchema = z.object({
-    id: z.coerce.number(),
+    id: z.string(),
   });
 
   const { id } = removePatientParamsSchema.parse(req.params);

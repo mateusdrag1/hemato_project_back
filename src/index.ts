@@ -1,9 +1,11 @@
 import fastify, { type FastifyInstance } from 'fastify';
 import { env } from '@/env';
 import { error, log } from '@/utils/Logger';
-import { appRoutes } from '@/app/routes';
 import { ZodError } from 'zod';
 import cors from '@fastify/cors';
+import fastifyJwt from '@fastify/jwt';
+import { appRoutes } from '@/app/http/routes';
+import fastifyCookie from '@fastify/cookie';
 
 class App {
   public app: FastifyInstance;
@@ -18,6 +20,19 @@ class App {
 
   private async routesConfig() {
     this.app.register(cors);
+
+    this.app.register(fastifyJwt, {
+      secret: env.JWT_SECRET,
+      cookie: {
+        cookieName: 'refreshToken',
+        signed: false,
+      },
+      sign: {
+        expiresIn: '10m',
+      },
+    });
+
+    this.app.register(fastifyCookie);
 
     this.app.register(appRoutes);
 

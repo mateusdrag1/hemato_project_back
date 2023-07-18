@@ -1,5 +1,5 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
-import { makeGetCategoriesUseCases } from '../use-cases/factories/make-get-categories.use-cases';
+import { makeGetCategoriesUseCases } from '@/app/use-cases/factories/make-get-categories.use-cases';
 
 export async function getCategories(req: FastifyRequest, res: FastifyReply) {
   const createGetCategoriesUseCase = makeGetCategoriesUseCases();

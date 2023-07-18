@@ -5,10 +5,11 @@ interface CreatePatientUseCaseRequest {
   blade: string;
   age: number;
   genre: string;
+  ownerId: string;
 }
 
 interface CreatePatientUseCaseResponse {
-  id: number;
+  id: string;
   blade: string;
   age: number;
   genre: string;
@@ -21,6 +22,7 @@ export class CreatePatientUseCase {
     blade,
     age,
     genre,
+    ownerId,
   }: CreatePatientUseCaseRequest): Promise<CreatePatientUseCaseResponse> {
     const dateNow = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const bladeId = blade.toString().padStart(4, '0');
@@ -34,6 +36,11 @@ export class CreatePatientUseCase {
     }
 
     const patient = await this.patientsRepository.create({
+      owner: {
+        connect: {
+          id: ownerId,
+        },
+      },
       blade: bladeFormatted,
       age,
       genre,

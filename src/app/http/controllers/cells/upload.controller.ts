@@ -1,7 +1,7 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify';
 import { z } from 'zod';
 
-import { makeUploadUseCase } from '../use-cases/factories/make-upload.use-cases';
+import { makeUploadUseCase } from '@/app/use-cases/factories/make-upload.use-cases';
 
 export async function upload(req: FastifyRequest, res: FastifyReply) {
   const uploadBodySchema = z.object({

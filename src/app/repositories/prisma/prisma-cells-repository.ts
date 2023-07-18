@@ -44,6 +44,11 @@ export class PrismaCellRepository implements CellRepository {
             name: true,
           },
         },
+        owner: {
+          select: {
+            id: true,
+          },
+        },
         created_at: true,
         updated_at: true,
       },

@@ -1,7 +1,7 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { makeCreateMentionsUseCase } from '../use-cases/factories/make-create-mention.use-cases';
-import { ResourceAlreadyExistsError } from '../use-cases/errors/resource-already-exists.error';
+import { makeCreateMentionsUseCase } from '@/app/use-cases/factories/make-create-mention.use-cases';
+import { ResourceAlreadyExistsError } from '@/app/use-cases/errors/resource-already-exists.error';
 
 export async function createMention(request: FastifyRequest, response: FastifyReply) {
   const createMentionBodySchema = z.object({

@@ -3,7 +3,7 @@ import { type PatientsRepository } from '../repositories/patients-repository';
 import { ResourceNotFoundError } from './errors/resource-not-found.error';
 
 interface savePlateletsUseCaseRequest {
-  id: number;
+  id: string;
   platelets: number;
 }
 
