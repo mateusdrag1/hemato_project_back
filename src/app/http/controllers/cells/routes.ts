@@ -8,6 +8,7 @@ import { getCells } from './get-cells.controller';
 import { getMentions } from './get-mentions.controller';
 import { upload } from './upload.controller';
 import { verifyUserRole } from '../../middlewares/verify-user-role';
+import { getCellById } from './get-cell-by-id.controller';
 
 export async function cellsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT);
@@ -29,6 +30,8 @@ export async function cellsRoutes(app: FastifyInstance) {
   );
 
   app.get('/cells', getCells);
+
+  app.get('/cells/:id', getCellById);
 
   app.post(
     '/upload',

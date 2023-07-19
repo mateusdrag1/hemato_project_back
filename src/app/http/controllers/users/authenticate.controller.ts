@@ -48,6 +48,7 @@ export async function authenticate(req: FastifyRequest, res: FastifyReply) {
       })
       .status(200)
       .send({
+        user,
         token,
       });
   } catch (err) {

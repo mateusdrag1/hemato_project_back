@@ -16,6 +16,20 @@ export class PrismaCellRepository implements CellRepository {
       where: {
         id,
       },
+      select: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        id: true,
+        name: true,
+        image: true,
+        morphology: true,
+        clinical_relevance: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
 
     return cell;
