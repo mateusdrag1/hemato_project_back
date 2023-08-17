@@ -2,7 +2,7 @@ import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { ResourceNotFoundError } from '@/app/use-cases/errors/resource-not-found.error';
-import { makeDeleteCellUseCase } from '@/app/use-cases/factories/make-cell.use-case';
+import { makeDeleteCellUseCase } from '@/app/use-cases/factories/make-delete-cell.use-case';
 
 export async function deleteCell(req: FastifyRequest, res: FastifyReply) {
   const deleteCellParamsSchema = z.object({
