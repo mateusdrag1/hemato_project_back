@@ -70,4 +70,12 @@ export class PrismaCellRepository implements CellRepository {
 
     return cells;
   }
+
+  async delete(id: number) {
+    await prisma.cell.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

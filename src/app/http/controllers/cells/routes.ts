@@ -9,6 +9,7 @@ import { getMentions } from './get-mentions.controller';
 import { upload } from './upload.controller';
 import { verifyUserRole } from '../../middlewares/verify-user-role';
 import { getCellById } from './get-cell-by-id.controller';
+import { deleteCell } from './delete-cell.controller';
 
 export async function cellsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT);
@@ -39,5 +40,13 @@ export async function cellsRoutes(app: FastifyInstance) {
       onRequest: [verifyUserRole('ADMIN')],
     },
     upload,
+  );
+
+  app.delete(
+    '/cells/:id',
+    {
+      onRequest: [verifyUserRole('ADMIN')],
+    },
+    deleteCell,
   );
 }
