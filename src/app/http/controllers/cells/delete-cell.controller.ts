@@ -9,7 +9,7 @@ export async function deleteCell(req: FastifyRequest, res: FastifyReply) {
     id: z.coerce.number(),
   });
 
-  const deleteCellParams = deleteCellParamsSchema.parse(req.body);
+  const deleteCellParams = deleteCellParamsSchema.parse(req.params);
 
   try {
     const deleteCellUseCase = makeDeleteCellUseCase();
