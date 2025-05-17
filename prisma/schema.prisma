@@ -2,11 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  output        = "app/generated/prisma/client"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -17,7 +19,7 @@ model User {
   name       String
   role       String     @default("MEMBER")
   created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
+  updated_at DateTime   @default(now()) @updatedAt
   patients   Patients[]
   cell       Cell[]
 
@@ -30,7 +32,7 @@ model Patients {
   age         Int
   genre       String
   created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
+  updated_at  DateTime      @default(now()) @updatedAt
   erythrocyte Erythrocyte[]
   leukocyte   Leukocyte[]
   platelets   Platelets[]
@@ -49,7 +51,7 @@ model Erythrocyte {
   RDW         Float?
   patient_id  String
   created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  updated_at  DateTime @default(now()) @updatedAt
   patient     Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
 
   @@map("erythrocytes")
@@ -66,7 +68,7 @@ model Leukocyte {
   basophils       Float?
   patient_id      String
   created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  updated_at      DateTime @default(now()) @updatedAt
   patient         Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
 
   @@map("leukocytes")
@@ -77,7 +79,7 @@ model Platelets {
   platelets  Float?
   patient_id String
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @default(now()) @updatedAt
   patient    Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
 
   @@map("platelets")
@@ -103,7 +105,7 @@ model Urine {
   sed_crystals     String?
   sed_bacteria     String?
   created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  updated_at       DateTime @default(now()) @updatedAt
 
   patient_id String
 
@@ -123,7 +125,7 @@ model Cell {
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
 
   created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
+  updated_at    DateTime      @default(now()) @updatedAt
   cell_mentions CellMention[]
 
   created_by String
@@ -137,7 +139,7 @@ model Category {
   name String
 
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @default(now()) @updatedAt
   cell       Cell[]
 
   @@map("categories")
@@ -149,7 +151,7 @@ model Mention {
   url  String?
 
   created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
+  updated_at    DateTime      @default(now()) @updatedAt
   cell_mentions CellMention[]
 
   @@map("mentions")
@@ -161,7 +163,7 @@ model CellMention {
   mention_id Int
 
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @default(now()) @updatedAt
 
   cell    Cell    @relation(fields: [cell_id], references: [id], onDelete: Cascade)
   mention Mention @relation(fields: [mention_id], references: [id], onDelete: Cascade)

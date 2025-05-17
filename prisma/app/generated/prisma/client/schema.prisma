@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "app/generated/prisma/client"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @default(uuid())
+  email      String     @unique
+  password   String
+  name       String
+  role       String     @default("MEMBER")
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
+  patients   Patients[]
+  cell       Cell[]
+
+  @@map("users")
+}
+
+model Patients {
+  id          String        @id @default(uuid())
+  blade       String
+  age         Int
+  genre       String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @default(now()) @updatedAt
+  erythrocyte Erythrocyte[]
+  leukocyte   Leukocyte[]
+  platelets   Platelets[]
+  urine       Urine[]
+  ownerId     String
+  owner       User          @relation(fields: [ownerId], references: [id])
+
+  @@map("patients")
+}
+
+model Erythrocyte {
+  id          Int      @id @default(autoincrement())
+  erythrocyte Float?
+  hemoglobin  Float?
+  hematocrit  Float?
+  RDW         Float?
+  patient_id  String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  patient     Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("erythrocytes")
+}
+
+model Leukocyte {
+  id              Int      @id @default(autoincrement())
+  leukocyte       Float?
+  neutrophils     Float?
+  bandNeutrophils Float?
+  lymphocytes     Float?
+  monocytes       Float?
+  eosinophils     Float?
+  basophils       Float?
+  patient_id      String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
+  patient         Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("leukocytes")
+}
+
+model Platelets {
+  id         Int      @id @default(autoincrement())
+  platelets  Float?
+  patient_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  patient    Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("platelets")
+}
+
+model Urine {
+  id               Int      @id @default(autoincrement())
+  volume           Float?
+  color            String?
+  ph               Float?
+  density          Float?
+  protein          String?
+  glucose          String?
+  ketones          String?
+  nitrites         Boolean?
+  hemoglobin       String?
+  urobilinogen     String?
+  sed_leukocytes   String?
+  sed_erythrocytes String?
+  sed_epithelial   String?
+  sed_mucus        String?
+  sed_cylinders    String?
+  sed_crystals     String?
+  sed_bacteria     String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now()) @updatedAt
+
+  patient_id String
+
+  patient Patients @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+
+  @@map("urine_tests")
+}
+
+model Cell {
+  id                 Int    @id @default(autoincrement())
+  name               String
+  morphology         String
+  clinical_relevance String
+  image              String
+
+  category_id Int
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
+  cell_mentions CellMention[]
+
+  created_by String
+  owner      User   @relation(fields: [created_by], references: [id])
+
+  @@map("cells")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  cell       Cell[]
+
+  @@map("categories")
+}
+
+model Mention {
+  id   Int     @id @default(autoincrement())
+  name String
+  url  String?
+
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
+  cell_mentions CellMention[]
+
+  @@map("mentions")
+}
+
+model CellMention {
+  id         Int @id @default(autoincrement())
+  cell_id    Int
+  mention_id Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  cell    Cell    @relation(fields: [cell_id], references: [id], onDelete: Cascade)
+  mention Mention @relation(fields: [mention_id], references: [id], onDelete: Cascade)
+
+  @@map("cell_mentions")
+}

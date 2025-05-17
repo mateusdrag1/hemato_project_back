@@ -1,11 +1,11 @@
-import fastify, { type FastifyInstance } from 'fastify';
+import { appRoutes } from '@/app/http/routes';
 import { env } from '@/env';
 import { error, log } from '@/utils/Logger';
-import { ZodError } from 'zod';
+import fastifyCookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
-import { appRoutes } from '@/app/http/routes';
-import fastifyCookie from '@fastify/cookie';
+import fastify, { type FastifyInstance } from 'fastify';
+import { ZodError } from 'zod';
 
 class App {
   public app: FastifyInstance;
@@ -19,7 +19,11 @@ class App {
   }
 
   private async routesConfig() {
-    this.app.register(cors);
+    this.app.register(cors, {
+      origin: '*',
+      methods: '*',
+      allowedHeaders: '*',
+    });
 
     this.app.register(fastifyJwt, {
       secret: env.JWT_SECRET,
